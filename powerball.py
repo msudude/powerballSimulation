@@ -13,12 +13,10 @@ def generateRandomTickets(numberOfTickets):
     for i in range(0,numberOfTickets):
         ticket = []
         for j in range(0,5):
-            repeat = 1
-            while repeat == 1:
+            number = getNumber()
+            while ticket.count(number) > 0:
                 number = getNumber()
-                if number not in ticket:
-                    repeat = 0
-                    ticket.append(number)
+            ticket.append(number)
         ticket.append(getPowerball())
         AllTickets.append(ticket)
     return AllTickets
@@ -28,12 +26,10 @@ def generateDistributedRandomTickets(numberOfTickets):
     for i in range(0,numberOfTickets):
         ticket = []
         for j in range(0,5):
-            repeat = 1
-            while repeat == 1:
+            number = getNumber()
+            while ticket.count(number) > 0:
                 number = getNumber()
-                if number not in ticket:
-                    repeat = 0
-                    ticket.append(number)
+            ticket.append(number)
         ticket.append((i % 26) + 1)
         AllTickets.append(ticket)
     return AllTickets
@@ -53,20 +49,21 @@ def generateSemirandomTickets(numberOfTickets):
     for i in range(0,numberOfTickets-5):
         ticket = []
         for j in range(0,5):
-            repeat = 1
-            while repeat == 1:
+            number = getNumber()
+            while ticket.count(number) > 0:
                 number = getNumber()
-                if number not in ticket:
-                    repeat = 0
-                    ticket.append(number)
+            ticket.append(number)
         ticket.append(getPowerball())
         AllTickets.append(ticket)
     return AllTickets
 
 def generateWinningNumbers():
     WinningNumbers = []
-    for j in range(0,5):
-        WinningNumbers.append(getNumber())
+    for i in range(0,5):
+        number = getNumber()
+        while WinningNumbers.count(number) > 0:
+            number = getNumber()
+        WinningNumbers.append(number)
     WinningNumbers.append(getPowerball())
     return WinningNumbers
 
@@ -122,6 +119,8 @@ randomTotal = 0
 semirandomTotal = 0
 distributedTotal = 0
 for i in range(0,simulations):
+    if (i % 100000) == 0 and i > 0:
+        print str(i / simulations) + "% complete"
     randomTickets = generateRandomTickets(numberOfTickets)
     semirandomTickets = generateSemirandomTickets(numberOfTickets)
     distributedTickets = generateDistributedRandomTickets(numberOfTickets)
@@ -130,14 +129,23 @@ for i in range(0,simulations):
         result = checkWinner(randomTickets[j],winningNumbers)
         if result[0] == 5 and result[1] == 1:
             randomJackpot += 1
+            print "jackpot!"
+            print "ticket: " + str(randomTickets[j])
+            print "winning number: " + str(winningNumbers)
         randomTotal = randomTotal + calculateProfit(result)
         result = checkWinner(semirandomTickets[j],winningNumbers)
         if result[0] == 5 and result[1] == 1:
             semirandomJackpot += 1
+            print "jackpot!"
+            print "ticket: " + str(semirandomTickets[j])
+            print "winning number: " + str(winningNumbers)
         semirandomTotal = semirandomTotal + calculateProfit(result)
         result = checkWinner(distributedTickets[j],winningNumbers)
         if result[0] == 5 and result[1] == 1:
             distributedJackpot += 1
+            print "jackpot!"
+            print "ticket: " + str(distributedTickets[j])
+            print "winning number: " + str(winningNumbers)
         distributedTotal = distributedTotal + calculateProfit(result)
 
 randomAverage = randomTotal / simulations
