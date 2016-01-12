@@ -120,7 +120,7 @@ semirandomTotal = 0
 distributedTotal = 0
 for i in range(0,simulations):
     if (i % 100000) == 0 and i > 0:
-        print str(i / simulations) + "% complete"
+        print str((i / float(simulations)) * 100) + "% complete"
     randomTickets = generateRandomTickets(numberOfTickets)
     semirandomTickets = generateSemirandomTickets(numberOfTickets)
     distributedTickets = generateDistributedRandomTickets(numberOfTickets)
@@ -148,9 +148,9 @@ for i in range(0,simulations):
             print "winning number: " + str(winningNumbers)
         distributedTotal = distributedTotal + calculateProfit(result)
 
-randomAverage = randomTotal / simulations
-semirandomAverage = semirandomTotal / simulations
-distributedAverage = distributedTotal / simulations
+randomAverage = randomTotal / float(simulations)
+semirandomAverage = semirandomTotal / float(simulations)
+distributedAverage = distributedTotal / float(simulations)
 
 outputFile.write("Random Tickets:\n")
 outputFile.write("-------------------------------------\n")
